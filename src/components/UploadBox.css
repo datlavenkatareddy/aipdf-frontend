@@ -1,0 +1,34 @@
+.upload-box {
+    width: 90%;
+    max-width: 1000px;
+    margin: 0 auto 25px;
+  }
+  
+  .upload-area {
+    border: 2px dashed rgba(255,255,255,0.6);
+    border-radius: 20px;
+    padding: 40px;
+    display: block;
+    text-align: center;
+    cursor: pointer;
+    color: #333;
+    font-size: 20px;
+    transition: 0.3s;
+    background: rgba(255,255,255,0.3);
+    backdrop-filter: blur(10px);
+  }
+  
+  .upload-area:hover {
+    background: rgba(255,255,255,0.5);
+  }
+  
+  .upload-area input {
+    display: none;
+  }
+  
+  .app.dark .upload-area {
+    color: #e0e0e0;
+    background: rgba(20,20,30,0.4);
+    border-color: rgba(255,255,255,0.15);
+  }
+  

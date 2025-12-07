@@ -1,0 +1,144 @@
+/* GLOBAL */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Inter", sans-serif;
+  }
+  
+  .app {
+    min-height: 100vh;
+    padding: 40px;
+    background: linear-gradient(135deg, #e3f2ff, #d5e1fb);
+    transition: 0.3s ease;
+  }
+  
+  .app.dark {
+    background: #0b0f19;
+    color: white;
+  }
+  
+  /* TITLE */
+  .title {
+    text-align: center;
+    font-size: 42px;
+    font-weight: 800;
+    margin-bottom: 30px;
+    background: linear-gradient(to right, #0072ff, #00c6ff);
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+  
+  /* CARDS */
+  .card {
+    margin: 20px auto;
+    padding: 20px;
+    width: 90%;
+    max-width: 1000px;
+    border-radius: 16px;
+    animation: fadeIn 0.6s;
+  }
+  
+  .glass {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(18px);
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.3);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+  }
+  
+  .app.dark .glass {
+    background: rgba(20, 25, 40, 0.55);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  
+  /* SUMMARY */
+  .summary-box p {
+    margin-top: 10px;
+    font-size: 17px;
+    line-height: 1.5;
+  }
+  
+  /* BUTTONS */
+  .btn {
+    padding: 12px 20px;
+    margin-right: 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    border: none;
+    font-weight: 600;
+    transition: 0.2s ease;
+  }
+  
+  .btn.primary {
+    background: #007aff;
+    color: white;
+  }
+  
+  .btn.secondary {
+    background: #8884ff;
+    color: white;
+  }
+  
+  .btn:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+  }
+  
+  /* DARK MODE SWITCH */
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 52px;
+    height: 28px;
+  }
+  
+  .switch input {
+    display: none;
+  }
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    background: #ccc;
+    border-radius: 34px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transition: 0.4s;
+  }
+  
+  .slider:before {
+    content: "";
+    position: absolute;
+    height: 22px;
+    width: 22px;
+    left: 3px;
+    bottom: 3px;
+    background: white;
+    border-radius: 50%;
+    transition: 0.4s;
+  }
+  
+  input:checked + .slider {
+    background: #4f8cff;
+  }
+  
+  input:checked + .slider:before {
+    transform: translateX(24px);
+  }
+  
+  /* TOGGLE POSITION */
+  .dark-toggle {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+  }
+  
+  /* ANIMATIONS */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
