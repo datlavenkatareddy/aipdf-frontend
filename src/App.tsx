@@ -20,7 +20,8 @@ export default function App() {
     formData.append("pdf", file);
 
     try {
-      const res = await fetch("http://localhost:5050/api/summarize", {
+        const res = await fetch("https://aipdf-backend.onrender.com/api/summarize", {
+
         method: "POST",
         body: formData,
       });
