@@ -1,6 +1,7 @@
 import { useState } from "react";
 import UploadBox from "./components/UploadBox";
 import PdfViewer from "./components/PdfViewer";
+import ReactMarkdown from "react-markdown";
 import "./App.css";
 
 export default function App() {
@@ -20,11 +21,13 @@ export default function App() {
     formData.append("pdf", file);
 
     try {
-        const res = await fetch("https://aipdf-backend.onrender.com/api/summarize", {
-
-        method: "POST",
-        body: formData,
-      });
+      const res = await fetch(
+        "https://aipdf-backend.onrender.com/api/summarize",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       const data = await res.json();
       setSummary(data.summary || "No summary found.");
@@ -53,7 +56,11 @@ export default function App() {
     <div className={dark ? "app dark" : "app"}>
       <div className="dark-toggle">
         <label className="switch">
-          <input type="checkbox" checked={dark} onChange={() => setDark(!dark)} />
+          <input
+            type="checkbox"
+            checked={dark}
+            onChange={() => setDark(!dark)}
+          />
           <span className="slider"></span>
         </label>
       </div>
@@ -78,11 +85,21 @@ export default function App() {
       {!loading && summary && (
         <div className="card glass summary-box">
           <h2>Summary</h2>
-          <p>{summary}</p>
+
+          {/* ✅ V2 UPGRADE: Proper section-wise rendering */}
+          <div className="markdown">
+             <ReactMarkdown>{summary}</ReactMarkdown>
+           </div>
+
+
 
           <div className="actions">
-            <button className="btn primary" onClick={copySummary}>📋 Copy</button>
-            <button className="btn secondary" onClick={downloadSummary}>⬇️ Download</button>
+            <button className="btn primary" onClick={copySummary}>
+              📋 Copy
+            </button>
+            <button className="btn secondary" onClick={downloadSummary}>
+              ⬇️ Download
+            </button>
           </div>
         </div>
       )}
