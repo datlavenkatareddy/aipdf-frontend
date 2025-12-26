@@ -1,71 +1,119 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import UploadBox from "./components/UploadBox";
 import PdfViewer from "./components/PdfViewer";
 import ReactMarkdown from "react-markdown";
 import "./App.css";
 
+/* ---------- Helpers ---------- */
+function normalizeBullets(text: string) {
+  return text.replace(/•\s*/g, "- ");
+}
+
 export default function App() {
   const [loading, setLoading] = useState(false);
-  const [summary, setSummary] = useState("");
+  const [finalSummary, setFinalSummary] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
-  const [dark, setDark] = useState(false);
 
-  const handleFileUpload = async (file: File) => {
-    setSummary("");
+  const [summaryLevel, setSummaryLevel] = useState<
+    "short" | "medium" | "detailed"
+  >("medium");
+
+  const [language, setLanguage] = useState("English");
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+
+  /* ---------- DARK MODE ---------- */
+  const [dark, setDark] = useState(() => {
+    return localStorage.getItem("theme") === "dark";
+  });
+
+  useEffect(() => {
+    document.body.className = dark ? "dark" : "";
+    localStorage.setItem("theme", dark ? "dark" : "light");
+  }, [dark]);
+
+  /* ---------- API Call ---------- */
+  const summarize = async (file: File) => {
     setLoading(true);
-
-    const url = URL.createObjectURL(file);
-    setPdfUrl(url);
+    setError(null);
+    setFinalSummary(null);
 
     const formData = new FormData();
     formData.append("pdf", file);
+    formData.append("summaryLevel", summaryLevel);
+    formData.append("language", language);
 
     try {
-      const res = await fetch(
-        "https://aipdf-backend.onrender.com/api/summarize",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+      const res = await fetch("https://aipdf-backend.onrender.com/api/summarize", {
+        method: "POST",
+        body: formData,
+      });
 
+      if (!res.ok) throw new Error();
       const data = await res.json();
-      setSummary(data.summary || "No summary found.");
-    } catch (err) {
-      console.error(err);
-      setSummary("Error summarizing PDF.");
+      if (!data.finalSummary) throw new Error();
+
+      setFinalSummary(data.finalSummary);
+    } catch {
+      setError("Something went wrong. Please try another PDF.");
     } finally {
       setLoading(false);
     }
   };
 
-  const copySummary = () => {
-    if (summary) navigator.clipboard.writeText(summary);
+  const handleFileUpload = async (file: File) => {
+    setUploadedFile(file);
+    setPdfUrl(URL.createObjectURL(file));
+    summarize(file);
   };
 
-  const downloadSummary = () => {
-    const blob = new Blob([summary], { type: "text/plain" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "summary.txt";
-    a.click();
-  };
+  useEffect(() => {
+    if (uploadedFile) summarize(uploadedFile);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [summaryLevel, language]);
 
   return (
-    <div className={dark ? "app dark" : "app"}>
-      <div className="dark-toggle">
-        <label className="switch">
-          <input
-            type="checkbox"
-            checked={dark}
-            onChange={() => setDark(!dark)}
-          />
-          <span className="slider"></span>
-        </label>
+    <div className="app">
+      {/* 🌙 DARK MODE TOGGLE */}
+      <div className="theme-toggle">
+        <button onClick={() => setDark(!dark)}>
+          {dark ? "☀️ Light" : "🌙 Dark"}
+        </button>
       </div>
 
-      <h1 className="title">AI PDF Summarizer</h1>
+      <h1 className="title">QuickSum</h1>
+      <p className="subtitle">Upload. Read. Done.</p>
+
+      {/* CONTROLS */}
+      <div className="controls glass">
+        <div className="control">
+          <label>📏 Summary length</label>
+          <select
+            value={summaryLevel}
+            onChange={(e) =>
+              setSummaryLevel(
+                e.target.value as "short" | "medium" | "detailed"
+              )
+            }
+          >
+            <option value="short">Short</option>
+            <option value="medium">Medium</option>
+            <option value="detailed">Detailed</option>
+          </select>
+        </div>
+
+        <div className="control">
+          <label>🌐 Language</label>
+          <select
+            value={language}
+            onChange={(e) => setLanguage(e.target.value)}
+          >
+            <option>English</option>
+            <option>Hindi</option>
+            <option>Telugu</option>
+          </select>
+        </div>
+      </div>
 
       <UploadBox onFileSelect={handleFileUpload} />
 
@@ -78,28 +126,26 @@ export default function App() {
 
       {loading && (
         <div className="card glass loader">
-          <p>Summarizing your PDF...</p>
+          <p>Summarizing your PDF…</p>
         </div>
       )}
 
-      {!loading && summary && (
+      {error && (
+        <div className="card glass error">
+          <p>{error}</p>
+        </div>
+      )}
+
+      {finalSummary && !loading && (
         <div className="card glass summary-box">
-          <h2>Summary</h2>
+          <h2>
+            {summaryLevel.charAt(0).toUpperCase() + summaryLevel.slice(1)} Summary
+          </h2>
 
-          {/* ✅ V2 UPGRADE: Proper section-wise rendering */}
           <div className="markdown">
-             <ReactMarkdown>{summary}</ReactMarkdown>
-           </div>
-
-
-
-          <div className="actions">
-            <button className="btn primary" onClick={copySummary}>
-              📋 Copy
-            </button>
-            <button className="btn secondary" onClick={downloadSummary}>
-              ⬇️ Download
-            </button>
+            <ReactMarkdown>
+              {normalizeBullets(finalSummary)}
+            </ReactMarkdown>
           </div>
         </div>
       )}

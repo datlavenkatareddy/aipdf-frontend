@@ -3,19 +3,14 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Inter", sans-serif;
+  font-family: "Inter", system-ui, sans-serif;
 }
 
 .app {
   min-height: 100vh;
   padding: 40px 20px;
-  background: linear-gradient(135deg, #e3f2ff, #d5e1fb);
-  transition: background 0.3s ease, color 0.3s ease;
-}
-
-.app.dark {
-  background: #0b0f19;
-  color: #f1f5f9;
+  background: linear-gradient(135deg, #e8f1ff, #dbe7ff);
+  color: #0f172a;
 }
 
 /* ================= TITLE ================= */
@@ -23,169 +18,214 @@
   text-align: center;
   font-size: 42px;
   font-weight: 800;
-  margin-bottom: 30px;
-  background: linear-gradient(to right, #0072ff, #00c6ff);
+  margin-bottom: 6px;
+  background: linear-gradient(to right, #2563eb, #06b6d4);
   -webkit-background-clip: text;
   color: transparent;
 }
 
+.subtitle {
+  text-align: center;
+  margin-bottom: 26px;
+  font-size: 15px;
+  opacity: 0.85;
+}
+
+/* ================= CONTROLS ================= */
+.controls {
+  max-width: 720px;
+  margin: 0 auto 28px auto;
+  padding: 18px;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  border-radius: 16px;
+}
+
+.control {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 200px;
+}
+
+.control label {
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  opacity: 0.85;
+}
+
+.icon {
+  font-size: 14px;
+}
+
+.control select {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  font-weight: 600;
+  cursor: pointer;
+}
+
 /* ================= CARDS ================= */
 .card {
-  margin: 20px auto;
+  margin: 22px auto;
   padding: 22px;
   width: 90%;
   max-width: 1000px;
   border-radius: 18px;
-  animation: fadeIn 0.6s ease;
 }
 
 .glass {
-  background: rgba(255, 255, 255, 0.45);
+  background: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(18px);
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
 }
 
-.app.dark .glass {
-  background: rgba(20, 25, 40, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* ================= SUMMARY ================= */
-.summary-box {
-  margin-top: 10px;
-}
-
-/* ================= MARKDOWN ================= */
-.markdown {
-  font-size: 16px;
-}
-
-.markdown h2 {
-  margin-top: 1.6rem;
-  margin-bottom: 0.6rem;
-  font-size: 1.45rem;
+/* ================= PDF PREVIEW ================= */
+.card h2 {
+  margin-bottom: 14px;
+  font-size: 18px;
   font-weight: 700;
 }
 
-.markdown h3 {
-  margin-top: 1.2rem;
-  margin-bottom: 0.4rem;
-  font-size: 1.25rem;
-  font-weight: 600;
-}
-
-.markdown p {
-  margin-bottom: 0.8rem;
-  line-height: 1.65;
-}
-
-.markdown ul {
-  padding-left: 1.4rem;
-  margin-bottom: 0.8rem;
-}
-
-.markdown li {
-  margin-bottom: 0.4rem;
-  line-height: 1.5;
-}
-
-/* Dark mode markdown */
-.app.dark .markdown {
-  color: #e5e7eb;
-}
-
-/* ================= BUTTONS ================= */
-.actions {
-  margin-top: 18px;
-}
-
-.btn {
-  padding: 12px 20px;
-  margin-right: 12px;
-  border-radius: 10px;
-  cursor: pointer;
-  border: none;
-  font-weight: 600;
-  transition: transform 0.2s ease, filter 0.2s ease;
-}
-
-.btn.primary {
-  background: #007aff;
-  color: white;
-}
-
-.btn.secondary {
-  background: #6366f1;
-  color: white;
-}
-
-.btn:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.1);
-}
-
-/* ================= DARK MODE SWITCH ================= */
-.dark-toggle {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 20px;
-}
-
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 52px;
-  height: 28px;
-}
-
-.switch input {
-  display: none;
-}
-
-.slider {
-  position: absolute;
-  cursor: pointer;
-  background: #ccc;
-  border-radius: 34px;
-  inset: 0;
-  transition: 0.4s;
-}
-
-.slider::before {
-  content: "";
-  position: absolute;
-  height: 22px;
-  width: 22px;
-  left: 3px;
-  bottom: 3px;
-  background: white;
-  border-radius: 50%;
-  transition: 0.4s;
-}
-
-input:checked + .slider {
-  background: #4f8cff;
-}
-
-input:checked + .slider::before {
-  transform: translateX(24px);
-}
-
-/* ================= LOADER ================= */
+/* ================= LOADER & ERROR ================= */
 .loader {
   text-align: center;
   font-weight: 600;
 }
 
-/* ================= ANIMATION ================= */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
+.error {
+  color: #dc2626;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* ================= SUMMARY ================= */
+.summary-box h2 {
+  margin-bottom: 14px;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+/* ================= MARKDOWN ================= */
+.markdown {
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+.markdown ul {
+  padding-left: 20px;
+  margin-bottom: 10px;
+}
+
+.markdown li {
+  margin-bottom: 8px;
+}
+
+.markdown p {
+  margin-bottom: 10px;
+}
+
+/* ================= ACTION BUTTONS ================= */
+.actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 12px;
+}
+
+.btn {
+  padding: 12px 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  border: none;
+  font-weight: 700;
+  font-size: 14px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn.primary {
+  background: #2563eb;
+  color: white;
+}
+
+.btn.secondary {
+  background: #4f46e5;
+  color: white;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 640px) {
+  .title {
+    font-size: 34px;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  .controls {
+    flex-direction: column;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
   }
 }
+
+/* ================= DARK MODE ================= */
+body.dark {
+  background: #0b1220;
+}
+
+body.dark .app {
+  background: linear-gradient(135deg, #0b1220, #111827);
+  color: #e5e7eb;
+}
+
+body.dark .glass {
+  background: rgba(17, 24, 39, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+body.dark select {
+  background: #111827;
+  color: #e5e7eb;
+  border-color: #374151;
+}
+
+body.dark .markdown {
+  color: #e5e7eb;
+}
+
+/* ================= THEME TOGGLE ================= */
+.theme-toggle {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.theme-toggle button {
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  background: #111827;
+  color: #e5e7eb;
+}
+
+body.dark .theme-toggle button {
+  background: #e5e7eb;
+  color: #111827;
+}
+
